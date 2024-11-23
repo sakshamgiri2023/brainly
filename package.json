@@ -1,0 +1,21 @@
+{
+  "name": "brainly",
+  "version": "1.0.0",
+  "description": "### Overview   The **Brainly Repo** is a centralized repository designed to store, organize, and retrieve all your essential information and notes effortlessly. Inspired by popular note-taking and productivity tools like Notion, this repo empowers users to structure their knowledge systematically while keeping it accessible and secure. It's perfect for personal knowledge management, team collaboration, or even as a lightweight alternative to SaaS-based note-taking apps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mongoose": "^8.8.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/mongoose": "^5.11.96"
+  }
+}
