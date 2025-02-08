@@ -88,7 +88,20 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
 });
 
 
-app.delete("/api/v1/content", (req, res) => {
+app.delete("/api/v1/content", async (req, res) => {
+    try{
+        await contentModel.deleteOne({});
+        res.json({
+            message: "All document deleted successfully"
+        })
+    } catch(err){
+        console.log(err);
+        res.status(500).json({
+            message:"Error deleting document"
+        });
+        
+    }
+
 
 });
 
