@@ -1,1 +1,1 @@
-# secon-brain-app
+# second-brain-app
