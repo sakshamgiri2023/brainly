@@ -1,6 +1,5 @@
 import "./types";
-import express from "express";
-import mongoose from "mongoose";
+import express from "express";  
 import jwt from "jsonwebtoken";
 import { contentModel, userModel } from "./db";
 import { JWt_password } from "./config"; 
@@ -10,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.post("/api/v1/signup", async (req, res) => {
-    // zod validation,
+    // zod validation && hash username, password
     const username = req.body.username;
     const password = req.body.password;
 
@@ -90,9 +89,16 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
 
 app.delete("/api/v1/content", async (req, res) => {
     try{
-        await contentModel.deleteOne({});
+        
+        const contentId = req.body.contentId;
+        await contentModel.deleteMany({
+            contentId,
+            //@ts-ignore
+            userId: req.userId
+
+        });
         res.json({
-            message: "All document deleted successfully"
+            message: "deleted"
         })
     } catch(err){
         console.log(err);
@@ -101,8 +107,14 @@ app.delete("/api/v1/content", async (req, res) => {
         });
         
     }
-
-
 });
+
+app.post("/api/v1/brain/share", (req, res)=>{
+
+})
+
+app.get("api/v1/brain/:sharelink", (req, res)=>{
+
+})
 
 app.listen(3000);  
