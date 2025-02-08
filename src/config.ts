@@ -1,0 +1,1 @@
+export const JWt_password = "12242455!";
