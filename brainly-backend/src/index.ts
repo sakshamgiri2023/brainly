@@ -4,10 +4,11 @@ import { contentModel, linkModel, userModel } from "./db";
 import { JWt_password } from "./config"; 
 import { userMiddleware } from "./middleware";
 import { random } from "./utils";
-
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.post("/api/v1/signup", async (req, res) => {
     // zod validation && hash username, password
@@ -63,6 +64,7 @@ app.post("/api/v1/content", userMiddleware, async (req , res)=> {
     await contentModel.create({
         link,
         type,
+        title: req.body.title,
         //@ts-ignore
         userId: req.userId,
         tags: []
@@ -110,27 +112,42 @@ app.delete("/api/v1/content", async (req, res) => {
     }
 });
 
+
 app.post("/api/v1/brain/share", userMiddleware, async (req, res)=>{
     const share = req.body.share;
+    
     if(share){
-      await linkModel.create({
+      const existingLink = await linkModel.findOne({
         //@ts-ignore
-        userId: req.userId, 
-        hash: random(10)
+                userId: req.userId
+            });
 
-      })
-    }else{
+            if (existingLink) {
+                res.json({
+                    hash: existingLink.hash
+                })
+                return;
+            }
+            const hash = random(10);
+            await linkModel.create({
+                //@ts-ignore
+                userId: req.userId,
+                hash: hash
+            })
+
+            res.json({
+                hash
+            })
+    } else {
         await linkModel.deleteOne({
             //@ts-ignore
             userId: req.userId
+        });
+
+        res.json({
+            message: "Removed link"
         })
     }
-    res.json({
-        message: "updated the sharable link"
-    })
-
-
-})
 
 app.get("api/v1/brain/:sharelink", async (req, res)=>{
     const hash = req.params.sharelink;
@@ -151,9 +168,10 @@ app.get("api/v1/brain/:sharelink", async (req, res)=>{
     })
 
     const user = await userModel.findOne({
-        userId: link.userId,
+        _id: link.userId,
     })
-
+    console.log(link);
+     
     if(!user){
         res.status(411).json({
             message: "user not found, error should ideally happen"
