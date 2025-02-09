@@ -109,7 +109,12 @@ app.delete("/api/v1/content", async (req, res) => {
     }
 });
 
-app.post("/api/v1/brain/share", (req, res)=>{
+app.post("/api/v1/brain/share", userMiddleware, async (req, res)=>{
+    const share = req.body.share;
+    if(share){
+      
+    }
+
 
 })
 
