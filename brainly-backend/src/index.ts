@@ -148,6 +148,8 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res)=>{
             message: "Removed link"
         })
     }
+});
+
 
 app.get("api/v1/brain/:sharelink", async (req, res)=>{
     const hash = req.params.sharelink;
@@ -186,4 +188,4 @@ app.get("api/v1/brain/:sharelink", async (req, res)=>{
     })
 })
 
-app.listen(3000);  
+app.listen(3000);
