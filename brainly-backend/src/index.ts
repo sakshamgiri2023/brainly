@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post("/api/v1/signup", async (req, res) => {
+app.post("/api/v1/signup", async (req : any, res) => {
     // zod validation && hash username, password
     const username = req.body.username;
     const password = req.body.password;
@@ -90,7 +90,7 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
 });
 
 
-app.delete("/api/v1/content", async (req, res) => {
+app.delete("/api/v1/content", userMiddleware, async (req : any, res : any) => {
     try{
         
         const contentId = req.body.contentId;
@@ -151,7 +151,7 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res)=>{
 });
 
 
-app.get("api/v1/brain/:sharelink", async (req, res)=>{
+app.get("api/v1/brain/:sharelink", userMiddleware, async (req, res)=>{
     const hash = req.params.sharelink;
     const link = await linkModel.findOne({
         hash
@@ -173,6 +173,7 @@ app.get("api/v1/brain/:sharelink", async (req, res)=>{
         _id: link.userId,
     })
     console.log(link); 
+    
      
     if(!user){
         res.status(411).json({
